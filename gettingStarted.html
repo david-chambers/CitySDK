@@ -1,0 +1,71 @@
+<html>
+<head>
+	<title>CitySDK - Getting Started</title>
+
+	<!--In order to use the City SDK, 3 modules need to be imported (jQuery, CitySDK, CitySDK.census)-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="js/citysdk.js" type="text/javascript"></script>
+    <script src="js/citysdk.census.js" text="text/javascript"></script>
+
+    <!--ArcGIS JavaScript API-->
+    <link rel="stylesheet" href="http://js.arcgis.com/3.14/esri/css/esri.css">
+    <script src="http://js.arcgis.com/3.14/"></script>
+    <style>
+      html, body, #map {
+        height:100%;
+        width:100%;
+        margin:0;
+        padding:0;
+      }
+    </style>
+</head>
+
+	<script>
+
+		//Add a map
+		require(["esri/map","dojo/domReady!"], function(Map) {
+			var map = new Map("map", {
+				basemap: "topo",
+				center: [-80.14, 35.66],
+          		zoom: 7,
+
+			});
+		});
+
+
+
+		//Instantiate the SDK and enable the module//
+		var sdk = new CitySDK();
+		var censusModule = sdk.modules.census;
+		//enable with API key
+		censusModule.enable("315210ddaf6505f170cb116e16d5a1ec69ffe699")
+		//----------------------------------------//
+
+		jQuery(document).ready(function(){
+
+
+
+			//Requesting Variables Demo - Get Income and population from D.C.//
+			var request = {
+				"lat": 38.9047,
+				"lng": -77.0164,
+				"level": "state",
+				"variables": [
+					"income",
+					"population"
+
+				]
+			};
+
+			censusModule.APIRequest(request, function(response) {
+				console.log(response);
+			});
+			//--------------------------------------------------------------//
+		});
+
+
+	</script>
+<body>
+	<div id="map"></div>
+</body>
+</html>
